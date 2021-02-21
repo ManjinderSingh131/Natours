@@ -4,7 +4,6 @@ const validator = require('validator');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
-  _id: String,
   name: {
     type: String,
     required: [true, 'Please tell us your name']
@@ -78,7 +77,9 @@ userSchema.pre(/^find/, function(next) {
 });
 
 userSchema.methods.correctPassword = async function(candidatePassword, userPassword) {
-  return await bcrypt.compare(candidatePassword, userPassword);
+  const res = await bcrypt.compare(candidatePassword, userPassword);
+  console.log(candidatePassword, userPassword);
+  return res;
 };
 
 userSchema.methods.changedPasswordAfter = function(JWTTimestamp) {
